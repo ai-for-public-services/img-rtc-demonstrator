@@ -1,6 +1,5 @@
 # Satellite Imagery Demonstrator Project
 
-*A The Turing Way inspired project to enable reproducibility in data science.*
 
 ## About this Repository
 
