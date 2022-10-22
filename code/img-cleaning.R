@@ -19,38 +19,165 @@ library(sp)
 # read in the roads shapefile, note that TL correspondonds to the area with Cambridge
 roads <- read_sf("data/raw/Download_2087242/open-map-local_4707745/TL_Road.shp")
 
+# will experiment with the OSM road shapefile as well as the OS roads file
+
+# crop roads to the extent of my images
+roads <- st_crop(roads,st_bbox(c(xmin = 541000, xmax = 551000, ymax = 254000, ymin = 264000)))
+
 ################################################################################
 # 2. Identify points along the road corresponding to the decided rules (with IDs)
 ################################################################################
 # need to decide between these
 # convert sf to shapefile
-shp_multiline <- as(roads, "Spatial")
+# shp_multiline <- as(roads, "Spatial")
+# 
+# # regularly sample points along line
+# shp_points <- sp::spsample(shp_multiline, n=10, type="regular")
+# 
+# sf_linestring <- st_cast(sf_multiline, "LINESTRING")
 
-# regularly sample points along line
-shp_points <- sp::spsample(shp_multiline, n=10, type="regular")
-
-sf_linestring <- st_cast(sf_multiline, "LINESTRING")
-sampled_points <- st_line_sample(roads, density = 1/100) # one point every 100 m
+sampled_points <- st_line_sample(roads, density = 1/100) # one point every 25 m
+sampled_points <- st_cast(sampled_points, "POINT") # cast to point
+# 5,935 roads, one point every 10m gives 62,425 points
+# 5,935 roads, one point every 25m gives 24,961 points
+# 5,935 roads, one point every 50m gives 12,459 points
+# 5,935 roads, one point every 100m gives 6,145 points
 
 ################################################################################
 # 3. Create two square buffers centered around each point
 ################################################################################
+sample_20m_buffer <- st_buffer(sampled_points, 20, nQuadSegs = 1,endCapStyle = "SQUARE")
 
+sample_200m_buffer <- st_buffer(sampled_points, 200, nQuadSegs = 1,endCapStyle = "SQUARE")
 
 ################################################################################
 # 4. identify which image(s) are included within each buffer
 ################################################################################
-# whats the total extent of my image files? might want to crop my road file based on this earlier...
-shapes <- list(cities, birds)
-shape_extents <- lapply(shapes, raster::extent)
-do.call(raster::merge, shape_extents)
+# make into a spatvector to use terra
+vect_200m_buffer<- vect(sample_200m_buffer)
+vect_20m_buffer<- vect(sample_20m_buffer)
 
+#for each image see which of the polygon intersect the img
+imagelist <- list.files("data/raw/cambridge-rgb/getmapping-rgb-25cm-2016_4700173/tl/") %>% Filter(function(x) {str_detect(x,"jpg")}, .)
+imagelist <- unlist(lapply(imagelist, function(i){paste0(
+  "C:/Users/jfrancis/OneDrive - The Alan Turing Institute/Documents - AI for Government/6-Technical Projects/satellite-image-demonstrator/sat-img-demonstrator/data/raw/cambridge-rgb/getmapping-rgb-25cm-2016_4700173/tl/",i)}))
+allrasters <- lapply(imagelist, terra::rast)
 
-# drop all of the points that i dont have images
+point_to_img_200m <- data.frame(point_id=1:6145,st_coordinates(sampled_points))
+# for each image, what polygon fall within them
+for(i in 1:length(allrasters)){
+  a <- terra::is.related(vect_200m_buffer,allrasters[[i]],"intersects")
+  a <- list(a)
+  names(a)<- paste0("img_",i)
+  point_to_img_200m <- bind_cols(point_to_img_200m,a)
+}
 
+point_to_img_200m %>% select(-point_id,-X,-Y) %>% rowSums() %>% table()
+
+# 0    1    2    3    4 
+# 405 2421 2537   48  734 
+# 405 points do not fall within at least one image @ 200m (to be expected)
+
+point_to_img_20m <- data.frame(point_id=1:6145,st_coordinates(sampled_points))
+# for each image, what polygon fall within them
+for(i in 1:length(allrasters)){
+  a <- terra::is.related(vect_20m_buffer,allrasters[[i]],"intersects")
+  a <- list(a)
+  names(a)<- paste0("img_",i)
+  point_to_img_20m <- bind_cols(point_to_img_20m,a)
+}
+
+point_to_img_20m %>% select(-point_id,-X,-Y) %>% rowSums() %>% table()
+
+# 0    1    2    4 
+# 588 5163  388    6 
+# 588 points do not fall within at least one image @ 20m (to be expected)
 ################################################################################
 # 5. Crop the image corresponding to buffers for each point
 ################################################################################
+# For reach point, read in the image(s) that the buffer(s) falls within
+# do 20m first
+
+start_time <- Sys.time()
+for(i in 1:6145){ 
+  print(i)
+  temp_row <- point_to_img_20m %>% filter(point_id %in% i) %>% select(-point_id,-X,-Y)
+  if(temp_row  %>% rowSums() <1 ) next # Skip if point doesn't overlap an image
+  temp_row <- temp_row %>% select(where(~ . > 0))
+  img_list <- as.numeric(gsub("img_","",names(temp_row)))
+  
+  # read in all of the images necessary for the given point
+  merge_list = list()
+  for(d in 1:length(img_list)){
+    temp_img <- allrasters[[img_list[[d]]]]
+
+    merge_list <- append(merge_list, list(temp_img))
+  }
+  
+  # if only one image things are super easy, just crop the image to the pointid of the buffer
+  if(length(img_list)==1){
+    temp_buffer <- vect_20m_buffer[i]
+    final_temp_img <- crop(merge_list[[1]], temp_buffer)
+    
+  }
+  
+  # if multiple images, merge all of them together, and crop the larger image to the pointid of the buffer  
+  if(length(img_list)>=1){
+    rsrc <- sprc(merge_list)
+    m <- merge(rsrc)
+    temp_buffer <- vect_20m_buffer[i]
+    
+    final_temp_img <- crop(m, temp_buffer)
+  }
+  
+  # Save images
+  writeRaster(final_temp_img, paste0("data/processed/cam-2017-20m/","cambdrige-20m-point-",i,".tif"), overwrite=FALSE)
+  
+}
+end_time <- Sys.time()
+loop_time_20m <- end_time - start_time
+
+# next do 200m
+start_time <- Sys.time()
+for(i in 2299:6145){ 
+  print(i)
+  temp_row <- point_to_img_200m %>% filter(point_id %in% i) %>% select(-point_id,-X,-Y)
+  if(temp_row  %>% rowSums() <1 ) next # Skip if point doesn't overlap an image
+  temp_row <- temp_row %>% select(where(~ . > 0))
+  img_list <- as.numeric(gsub("img_","",names(temp_row)))
+  
+  ### 22/10/2022 Switching things up to crop images before merging, hoping this is faster
+  # read in all of the images necessary for the given point
+  merge_list = list()
+  temp_buffer <- vect_200m_buffer[i]
+  for(d in 1:length(img_list)){
+    temp_img <- allrasters[[img_list[[d]]]]
+    temp_img <- crop(temp_img, temp_buffer)
+    merge_list <- append(merge_list, list(temp_img))
+  }
+  
+  # if only one image things are super easy, just crop the image to the pointid of the buffer
+  if(length(img_list)==1){
+    final_temp_img <- merge_list[[1]]
+  }
+  
+  # if multiple images, merge all of them together, and crop the larger image to the pointid of the buffer  
+  if(length(img_list)>=1){
+    rsrc <- sprc(merge_list)
+    final_temp_img <- merge(rsrc)
+    # temp_buffer <- vect_200m_buffer[i]
+    # 
+    # final_temp_img <- crop(m, temp_buffer)
+  }
+  
+  # Save images
+  writeRaster(final_temp_img, paste0("data/processed/cam-2017-200m/","cambdrige-200m-point-",i,".tif"), overwrite=FALSE)
+  
+}
+end_time <- Sys.time()
+loop_time_200m <- end_time - start_time
+
+# Time difference of 1.178173 hours
 
 ################################################################################
 # 6. Combine rasters where necessary if buffer falls in between multiple images (or first create a larger iamge raster thats is then cropped)
@@ -61,3 +188,33 @@ do.call(raster::merge, shape_extents)
 ################################################################################
 # 7. Save cropped images to two separate folders based on size with id in name
 ################################################################################
+
+
+
+
+
+
+################################################################################
+# Random Workspace
+################################################################################
+
+# whats the total extent of my image files? might want to crop my road file based on this earlier...
+# get a list of all the paths for one year
+# imagelist <- list.files("data/raw/cambridge-rgb/getmapping-rgb-25cm-2016_4700173/tl/") %>% Filter(function(x) {str_detect(x,"jpg")}, .)
+# imagelist <- unlist(lapply(imagelist, function(i){paste0(
+#   "C:/Users/jfrancis/OneDrive - The Alan Turing Institute/Documents - AI for Government/6-Technical Projects/satellite-image-demonstrator/sat-img-demonstrator/data/raw/cambridge-rgb/getmapping-rgb-25cm-2016_4700173/tl/",i)}))
+# 
+# img_extents <- lapply(imagelist, raster::extent)
+# do.call(raster::merge, shape_extents)
+# 
+# allrasters <- lapply(imagelist, terra::rast)
+# all_extents <- lapply(allrasters, ext)
+# 
+# #total <- terra::merge(all_extents[[1]],all_extents[[2]])
+# 
+# # drop all of the points that i dont have images
+# vrtfile <- paste0(tempfile(), ".vrt")
+# v <- vrt(imagelist, vrtfile)
+# head(readLines(vrtfile))
+#v
+#extent      : 541000, 551000, 254000, 264000  (xmin, xmax, ymin, ymax)
