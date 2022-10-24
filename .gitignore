@@ -1,6 +1,7 @@
 # <!-- Using .gitignore Python template-->
 # ignore data for now until i figure out file size stuff
 data/
+project-management/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
