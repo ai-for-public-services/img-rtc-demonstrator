@@ -121,10 +121,10 @@ rm(sample_20m_buffer,sample_200m_buffer,a,sampled_points,i,imagelist)
 # do 20m first
 
 create_road_patch <- function(road_point_id=1, # id (row number) of centroid in point file
-                              point_to_img_file=point_to_img_20m, # file connecting centroids to rasters
-                              buffer_size=20, # size of squares that have already been made
+                              point_to_img_file=point_to_img_file, # file connecting centroids to rasters
+                              buffer_size=buffer_size, # size of squares that have already been made
                               image_resolution=.25,
-                              buffer_file=vect_20m_buffer,
+                              buffer_file=buffer_file,
                               save_location="data/processed/",
                               allrasters=allrasters # list of all raster files
                               ){
@@ -168,7 +168,7 @@ create_road_patch <- function(road_point_id=1, # id (row number) of centroid in 
   # Save images
   invisible(writeRaster(final_temp_img, paste0(save_location,"cam-2017-",buffer_size,"m/cambdrige-",buffer_size,"m-point-",road_point_id,".tif"), overwrite=FALSE))
   
-  return(paste0("Image patch ",road_point_id, " saved successfully to ", save_location,"cambdrige-20m-point-",road_point_id,".tif"))
+  return(paste0("Image patch ",road_point_id, " saved successfully to ", save_location,"cambdrige-",buffer_size,"m-point-",road_point_id,".tif"))
   
   
 }
@@ -193,6 +193,7 @@ for(i in 1:6145){
 end_time <- Sys.time()
 loop_time_20m <- end_time - start_time
 
+#Time difference of 43.20307 mins
 
 # 200m sq buffer
 start_time <- Sys.time()
