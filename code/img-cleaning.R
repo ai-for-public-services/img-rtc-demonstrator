@@ -175,7 +175,8 @@ create_road_patch <- function(road_point_id=1, # id (row number) of centroid in 
 
 # Loop over each centroid and save image if possible
 
-# 20m sq buffer
+### 20m sq buffer ###
+# At 20m buffer this takes 43.20307 mins to run
 start_time <- Sys.time()
 for(i in 1:6145){ 
   temp_message <- create_road_patch(
@@ -193,9 +194,10 @@ for(i in 1:6145){
 end_time <- Sys.time()
 loop_time_20m <- end_time - start_time
 
-#Time difference of 43.20307 mins
 
-# 200m sq buffer
+
+### 200m sq buffer ###
+# At 200m this takes 2.307753 hours to run
 start_time <- Sys.time()
 for(i in 1:6145){ 
   temp_message <- create_road_patch(
