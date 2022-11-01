@@ -65,13 +65,13 @@ sampled_points <- generate_sample_ids(file_name="data/raw/Download_2087242/open-
 ################################################################################
 sample_20m_buffer <- st_buffer(sampled_points, 20, nQuadSegs = 1,endCapStyle = "SQUARE")
 
-sample_200m_buffer <- st_buffer(sampled_points, 200, nQuadSegs = 1,endCapStyle = "SQUARE")
+sample_100m_buffer <- st_buffer(sampled_points, 100, nQuadSegs = 1,endCapStyle = "SQUARE")
 
 ################################################################################
 # 4. identify which image(s) are included within each buffer
 ################################################################################
 # make into a spatvector to use terra
-vect_200m_buffer<- vect(sample_200m_buffer)
+vect_100m_buffer<- vect(sample_100m_buffer)
 vect_20m_buffer<- vect(sample_20m_buffer)
 
 #for each image see which of the polygon intersect the img
@@ -80,16 +80,16 @@ imagelist <- unlist(lapply(imagelist, function(i){paste0(
   "C:/Users/jfrancis/OneDrive - The Alan Turing Institute/Documents - AI for Government/6-Technical Projects/satellite-image-demonstrator/sat-img-demonstrator/data/raw/cambridge-rgb/getmapping-rgb-25cm-2016_4700173/tl/",i)}))
 allrasters <- lapply(imagelist, terra::rast)
 
-point_to_img_200m <- data.frame(point_id=1:6145,st_coordinates(sampled_points))
+point_to_img_100m <- data.frame(point_id=1:6145,st_coordinates(sampled_points))
 # for each image, what polygon fall within them
 for(i in 1:length(allrasters)){
-  a <- terra::is.related(vect_200m_buffer,allrasters[[i]],"intersects")
+  a <- terra::is.related(vect_100m_buffer,allrasters[[i]],"intersects")
   a <- list(a)
   names(a)<- paste0("img_",i)
-  point_to_img_200m <- bind_cols(point_to_img_200m,a)
+  point_to_img_100m <- bind_cols(point_to_img_100m,a)
 }
 
-point_to_img_200m %>% select(-point_id,-X,-Y) %>% rowSums() %>% table()
+point_to_img_100m %>% select(-point_id,-X,-Y) %>% rowSums() %>% table()
 
 # 0    1    2    3    4 
 # 405 2421 2537   48  734 
@@ -215,6 +215,24 @@ for(i in 1:6145){
 end_time <- Sys.time()
 loop_time_200m <- end_time - start_time
 
+### 100m sq buffer ###
+# At 100m this takes  hours to run
+start_time <- Sys.time()
+for(i in 1:1500){ 
+  temp_message <- create_road_patch(
+    road_point_id=i, # id (row number) of centroid in point file
+    point_to_img_file=point_to_img_100m, # file connecting centroids to rasters
+    buffer_size=100, # size of squares that have already been made
+    image_resolution=.25,
+    buffer_file=vect_100m_buffer,
+    save_location="data/processed/",
+    allrasters=allrasters # list of all raster files
+  )
+  
+  print(temp_message)
+}
+end_time <- Sys.time()
+loop_time_100m <- end_time - start_time
 
 ################################################################################
 # Random Workspace/Scrap Code
