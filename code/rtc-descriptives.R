@@ -187,27 +187,146 @@ chisq.test(table(rtc_2016$time_of_day))
 # made for using RTC data https://github.com/ropensci/stats19/
 # USE THIS FOR THE NON CAMBRIDGE DATA
 
-crashes <- stats19::get_stats19(year = 2017, type = "accident")
-crashes <- crashes %>% dplyr::filter(is.na(location_easting_osgr)==FALSE)
+# read in data
+crashes17 <- stats19::get_stats19(year = 2017, type = "accident")
+casualties17 <- stats19::get_stats19(year = 2017, type = "casualty")
+crashes18 <- stats19::get_stats19(year = 2018, type = "accident")
+casualties18 <- stats19::get_stats19(year = 2018, type = "casualty")
+crashes19 <- stats19::get_stats19(year = 2019, type = "accident")
+casualties19 <- stats19::get_stats19(year = 2019, type = "casualty")
+crashes20 <- stats19::get_stats19(year = 2020, type = "accident")
+casualties20 <- stats19::get_stats19(year = 2020, type = "casualty")
 
-total_extent=c(xmin = 541000, xmax = 551000, ymax = 254000, ymin = 264000)
-rtc_2017 <- st_as_sf(crashes,coords = c("location_easting_osgr","location_northing_osgr"),crs=st_crs(rtc_all))
+
+# extract casuality info and append to RTC data
+casualties17 <- casualties17 %>% mutate(
+  cyclist= if_else(str_detect(casualty_type,"Cyclist")==TRUE,1,0),
+  pedestrian= if_else(str_detect(casualty_type,"Pedestrian")==TRUE,1,0),
+  motorcycle= if_else(str_detect(casualty_type,"Motorcycle")==TRUE,1,0)
+) %>% group_by(accident_reference) %>% summarise(
+  cyclist=max(cyclist,na.rm = T),
+  pedestrian=max(pedestrian,na.rm = T),
+  motorcycle=max(motorcycle,na.rm = T),
+)
+
+casualties18 <- casualties18 %>% mutate(
+  cyclist= if_else(str_detect(casualty_type,"Cyclist")==TRUE,1,0),
+  pedestrian= if_else(str_detect(casualty_type,"Pedestrian")==TRUE,1,0),
+  motorcycle= if_else(str_detect(casualty_type,"Motorcycle")==TRUE,1,0)
+) %>% group_by(accident_reference) %>% summarise(
+  cyclist=max(cyclist,na.rm = T),
+  pedestrian=max(pedestrian,na.rm = T),
+  motorcycle=max(motorcycle,na.rm = T),
+)
+
+casualties19 <- casualties19 %>% mutate(
+  cyclist= if_else(str_detect(casualty_type,"Cyclist")==TRUE,1,0),
+  pedestrian= if_else(str_detect(casualty_type,"Pedestrian")==TRUE,1,0),
+  motorcycle= if_else(str_detect(casualty_type,"Motorcycle")==TRUE,1,0)
+) %>% group_by(accident_reference) %>% summarise(
+  cyclist=max(cyclist,na.rm = T),
+  pedestrian=max(pedestrian,na.rm = T),
+  motorcycle=max(motorcycle,na.rm = T),
+)
+casualties19[casualties19=='-Inf'] <- 0
+
+casualties20 <- casualties20 %>% mutate(
+  cyclist= if_else(str_detect(casualty_type,"Cyclist")==TRUE,1,0),
+  pedestrian= if_else(str_detect(casualty_type,"Pedestrian")==TRUE,1,0),
+  motorcycle= if_else(str_detect(casualty_type,"Motorcycle")==TRUE,1,0)
+) %>% group_by(accident_reference) %>% summarise(
+  cyclist=max(cyclist,na.rm = T),
+  pedestrian=max(pedestrian,na.rm = T),
+  motorcycle=max(motorcycle,na.rm = T),
+)
+casualties20[casualties20=='-Inf'] <- 0
 
 
-rtc_all <- rtc_all %>% st_filter(st_as_sfc(st_bbox(total_extent,crs = st_crs(rtc_all))))
-rtc_all_2017 <- rtc_all %>% filter(Date>=20170000 & Date<20180000)
-rtc_2017 <- rtc_2017 %>% st_filter(st_as_sfc(st_bbox(total_extent,crs = st_crs(rtc_all))))
+# join by accident reference
+crashes17 <- left_join(crashes17,casualties17,by="accident_reference")
+crashes18 <- left_join(crashes18,casualties18,by="accident_reference")
+crashes19 <- left_join(crashes19,casualties19,by="accident_reference")
+crashes20 <- left_join(crashes20,casualties20,by="accident_reference")
+rm(casualties17,casualties18,casualties19,casualties20)
 
-# not as useful  i dont think 
-#vehicles <- stats19::get_stats19(year = 2017, type = "vehicle")
+# grab extents
+cambridge_extent = c(xmin = 541000, xmax = 551000, ymax = 254000, ymin = 264000)
+gloucester_extent= c(xmin = 379000, xmax = 389000, ymax = 222000, ymin = 212000)
+oxford_extent= c(xmin = 447000, xmax = 457000, ymax = 212000 , ymin = 202000)
 
+# filter out few cases without location data
+crashes17 <- crashes17 %>% dplyr::filter(is.na(location_easting_osgr)==FALSE)
+crashes18 <- crashes18 %>% dplyr::filter(is.na(location_easting_osgr)==FALSE)
+crashes19 <- crashes19 %>% dplyr::filter(is.na(location_easting_osgr)==FALSE)
+crashes20 <- crashes20 %>% dplyr::filter(is.na(location_easting_osgr)==FALSE)
+
+crashes17 <- st_as_sf(crashes17,coords = c("location_easting_osgr","location_northing_osgr"),crs=st_crs(27700))
+crashes18 <- st_as_sf(crashes18,coords = c("location_easting_osgr","location_northing_osgr"),crs=st_crs(27700))
+crashes19 <- st_as_sf(crashes19,coords = c("location_easting_osgr","location_northing_osgr"),crs=st_crs(27700))
+crashes20 <- st_as_sf(crashes20,coords = c("location_easting_osgr","location_northing_osgr"),crs=st_crs(27700))
+
+crashes17_cam <- crashes17 %>% st_filter(st_as_sfc(st_bbox(cambridge_extent,crs = st_crs(27700))))
+crashes18_cam <- crashes18 %>% st_filter(st_as_sfc(st_bbox(cambridge_extent,crs = st_crs(27700))))
+crashes19_cam <- crashes19 %>% st_filter(st_as_sfc(st_bbox(cambridge_extent,crs = st_crs(27700))))
+crashes20_cam <- crashes20 %>% st_filter(st_as_sfc(st_bbox(cambridge_extent,crs = st_crs(27700))))
+
+crashes17_oxf <- crashes17 %>% st_filter(st_as_sfc(st_bbox(oxford_extent,crs = st_crs(27700))))
+crashes18_oxf <- crashes18 %>% st_filter(st_as_sfc(st_bbox(oxford_extent,crs = st_crs(27700))))
+crashes19_oxf <- crashes19 %>% st_filter(st_as_sfc(st_bbox(oxford_extent,crs = st_crs(27700))))
+crashes20_oxf <- crashes20 %>% st_filter(st_as_sfc(st_bbox(oxford_extent,crs = st_crs(27700))))
+
+crashes17_glo <- crashes17 %>% st_filter(st_as_sfc(st_bbox(gloucester_extent,crs = st_crs(27700))))
+crashes18_glo <- crashes18 %>% st_filter(st_as_sfc(st_bbox(gloucester_extent,crs = st_crs(27700))))
+crashes19_glo <- crashes19 %>% st_filter(st_as_sfc(st_bbox(gloucester_extent,crs = st_crs(27700))))
+crashes20_glo <- crashes20 %>% st_filter(st_as_sfc(st_bbox(gloucester_extent,crs = st_crs(27700))))
+
+rm(crashes17,crashes18,crashes19,crashes20)
+
+
+# do the 2017/2020 data in a similar manner
+crashes20_glo <- crashes20_glo %>% mutate(
+  surface=if_else(road_surface_conditions=="Dry","dry","wet"),
+  light=if_else(light_conditions=="Daylight","Light","Dark"),
+  # pedestrian=if_else(Pedestrian==0,0,1),
+  # cycle=if_else(Cycles==0,0,1),
+  # time?
+  Time=lubridate::hour(lubridate::hms(time)),
+  time_of_day=case_when(
+    Time<5~"Night",
+    Time>=5 & Time<10 ~"Morning",
+    Time>=10 & Time<15 ~"Middle of Day",
+    Time>=15 & Time<20 ~"Afternoon/Evening",
+    Time>=20 ~"Night"),
+  year=accident_year,
+  city="gloucester") %>% select(
+    time_of_day,surface,accident_severity,light,speed_limit,number_of_vehicles,
+    number_of_casualties,accident_index,year,cyclist,pedestrian,motorcycle) %>% janitor::clean_names() %>%
+  mutate(lon = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2]) %>% st_drop_geometry()
+
+# combine to save
+crashes_all <- bind_rows(crashes17_cam,
+                         crashes18_cam,
+                         crashes19_cam,
+                         crashes20_cam,
+                         crashes17_oxf,
+                         crashes18_oxf,
+                         crashes19_oxf,
+                         crashes20_oxf,
+                         crashes17_glo,
+                         crashes18_glo,
+                         crashes19_glo,
+                         crashes20_glo)
+
+################################################################################
+# Need to create the final datasets for each of cambridge, gloucester, and oxford
 
 # SAVE FINAL RTC FILES
-cam_rtc<-bind_rows(rtc_2016,rtc_all_2017,rtc_all_2020)
-cam_rtc <- cam_rtc %>%
-  mutate(lon = st_coordinates(.)[,1],
-                lat = st_coordinates(.)[,2])
-
-cam_rtc <- cam_rtc %>% st_drop_geometry()
-write.csv(cam_rtc,"data/processed/rtc/cam-rtc.csv",row.names = F)
+# cam_rtc<-bind_rows(rtc_2016,rtc_all_2017,rtc_all_2020)
+# cam_rtc <- cam_rtc %>%
+#   mutate(lon = st_coordinates(.)[,1],
+#          lat = st_coordinates(.)[,2])
+# 
+# cam_rtc <- cam_rtc %>% st_drop_geometry()
+write.csv(crashes_all,"data/processed/rtc/all-rtc.csv",row.names = F)
 
