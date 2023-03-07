@@ -14,10 +14,10 @@ ggplot(df, aes(color=Cluster, shape=Cluster, y=Y, x=Mode)) +
   geom_point(data=df %>% filter(Circled == 1),
              pch=21,
              size=10,
-             colour="black") +
+             colour='black') +
   facet_wrap(~City, scales='free', ncol=2) +
   theme_minimal() + xlab('') + ylab('Average Z-Score of RTCs') +
   scale_color_brewer(guide=F, palette='Dark2') + scale_shape_discrete(guide=F) 
 
-ggsave
+ggsave('dot chart.png')
   
