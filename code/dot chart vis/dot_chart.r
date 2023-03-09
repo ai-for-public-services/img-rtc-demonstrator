@@ -3,7 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-setwd("C:/Users/simon/Desktop/Turing/img demonstrator")
+#setwd("C:/Users/simon/Desktop/Turing/img demonstrator")
 
 df<- read_excel('rtc_dot_chart.xlsx', sheet='data')
 
