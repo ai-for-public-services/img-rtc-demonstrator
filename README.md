@@ -1,4 +1,4 @@
-# Satellite Imagery Demonstrator Project
+# Hazardous Road Traffic Collsion Clustering using Aerial Imagery
 
 
 ## About this Repository
