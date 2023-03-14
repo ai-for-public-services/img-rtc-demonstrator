@@ -5,6 +5,11 @@
 
 This project is focused on using unsupervised ML techniques on aerial image data to look at relationships between the built environment and Road Traffic Collisions (car crashes).
 
+
+### Data
+- The aerial imagery used in this work was obtained from https://digimap.edina.ac.uk/aerial and cannot be posted publicly.
+- RTC data was obtained from the UK's Department for Transport using the Stats19 R package https://github.com/ropensci/stats19/
+
 **Maintainers**
 
 This repository is jointly developed and maintained by the Turing AI for Government team.
