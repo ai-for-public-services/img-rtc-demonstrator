@@ -17,7 +17,6 @@ generate_sample_ids <- function(file_name="data/raw/Download_2087242/open-map-lo
   
   # transform to BNG
   roads <- st_transform(roads, crs=27700)
-  # will experiment with the OSM road shapefile as well as the OS roads file
   
   # crop roads to the extent of my images
   roads <- st_crop(roads,st_bbox(total_extent))
@@ -31,14 +30,9 @@ generate_sample_ids <- function(file_name="data/raw/Download_2087242/open-map-lo
   
   # ensure road file is in linestring
   roads <- st_cast(st_cast(roads, "MULTILINESTRING"),"LINESTRING") # have to double cast to avoid losing information
-  #osm_roads <- st_cast(osm_roads,"LINESTRING")
   
   sampled_points <- st_line_sample(roads, density = point_density) # one point every 25 m
   sampled_points <- st_cast(sampled_points, "POINT") # cast to point
-  # 5,935 roads, one point every 10m gives 62,425 points
-  # 5,935 roads, one point every 25m gives 24,961 points
-  # 5,935 roads, one point every 50m gives 12,459 points
-  # 5,935 roads, one point every 100m gives 6,145 points
   return(sampled_points)
   
 }
@@ -48,14 +42,6 @@ generate_sample_ids <- function(file_name="data/raw/Download_2087242/open-map-lo
 #gloucester: c(xmin = 379000, xmax = 389000, ymax = 222000, ymin = 212000)
 #oxford: c(xmin = 447000, xmax = 457000, ymax = 212000 , ymin = 202000)
 
-
-# # Read in the RTC data
-# cam_rtc <- read_csv("data/processed/rtc/cam-rtc.csv")
-# 
-# # Sample Points
-# sampled_points <- generate_sample_ids(file_name="data/raw/Download_2087242/open-map-local_4707745/TL_Road.shp",
-#                                       point_density=1/100,
-#                                       total_extent=c(xmin = 541000, xmax = 551000, ymax = 254000, ymin = 264000))
 
 # Spatial Join based on some sort of set of rules
 create_outcome_data <- function(road_network_path = "data/raw/Download_2087242/open-map-local_4707745/TL_Road.shp",
@@ -200,7 +186,7 @@ paths <- all_rtc$file_path
 test <- terra::rast(paths[1])
 plot(test)
 
-write.csv(all_rtc,"data/processed/rtc/all_rtc_points_03012023.csv",row.names = F)
+#write.csv(all_rtc,"data/processed/rtc/all_rtc_points_03012023.csv",row.names = F)
 
 
 # oxf <- oxf %>% st_drop_geometry() %>% select(-accident_index)
