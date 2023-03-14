@@ -3,6 +3,12 @@
 data/
 project-management/
 reports/
+code/data/
+code/old/
+code/dot-chart-vis/
+lit/
+project-management/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
