@@ -21,7 +21,7 @@ Globally, approximately 1.3 million people die each year because of RTCs, and a 
 
 ## Methodological Pipeline
 
-We present a pipeline that extracts meaning from aerial images with minimal supervision, and focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
+We present a pipeline that extracts meaning from aerial images with minimal supervision to show how aerial image data can provide nuance to understanding how and where different types of RTCs occur, which can in turn allow for improved targeting of interventions designed at tackling this classical issue. We focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
 
 
 
@@ -32,7 +32,7 @@ We present a pipeline that extracts meaning from aerial images with minimal supe
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 1.** Methodological Pipeline </sub>
 
 
-Figure 1 shows that first, road networks and aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering are used to extract image features from the data before grouping road segments for analysis and interpretation.
+Figure 1 shows that first, road networks and over 100,000 aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering were used in turn to extract image features from the data before grouping road segments for analysis and interpretation.
 
 **Road Traffic Collision Data**
 
@@ -43,8 +43,8 @@ RTC data is based on the point-level incidents provided by the Department for Tr
 
 <sub> **Figure 2.** Locations of RTC and hazardous RTC road segments across the three UK towns. <sub>
 
-## Clustering of Hazardous RTCs
-Agglomerative clustering for Cambridge, Gloucester, and Oxford generated three separate dendrograms shown in Figure 3. The dotted horizontal line in each plot signifies the cut point for choosing the number of clusters, whereby the number of intersecting vertical lines represents the number of final clusters. There is no one size fits all approach to selecting the number of clusters, exemplified by the fact that not each locale was determined to contain the same number of clusters. 
+## Clustering the Hazardous RTCs
+Agglomerative clustering, which is a bottom-up hierarchical clustering technique, generated three separate dendrograms for Cambridge, Gloucester, and Oxford shown in Figure 3. The dotted horizontal line in each plot signifies the cut point for choosing the number of clusters, whereby the number of intersecting vertical lines represents the number of final clusters. There is no one size fits all approach to selecting the number of clusters, exemplified by the fact that not each locale was determined to contain the same number of clusters. 
 
 
 <p align="center">
@@ -54,7 +54,9 @@ Agglomerative clustering for Cambridge, Gloucester, and Oxford generated three s
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 3.** Dendrograms used to select the final number of clusters for the three UK towns. Linkage distance should not be compared across the different towns as it depends on the number of variables included in the clustering, which differed by locale. <sub>
 
 
-After identifying the final number of clusters in each location, descriptive analyses examined the various RTC variables to see if there were differences across clusters. Figure 4 shows selected RTC variables from each locale highlighting some of the most interesting RTC features. The goal of this descriptive analysis was to identify one cluster of interest from each locale to examine in detail based on variation we observed among the different RTC variables. Looking at the breakdown of RTCs by type within each cluster of Gloucester, one cluster combines road segments with a higher average rate of RTCs involving motorcycles than either of the other two clusters. In Cambridge, another cluster stands out as having a high average number of RTCs involving cyclists. Alternatively, in Oxford RTCs involving pedestrians were observed at a higher rate in one cluster than any of the other clusters. These three clusters will be examined qualitatively through visual inspection and mapping to explore the type of insights that can be gained from this method.
+After identifying the final number of clusters in each location, descriptive analyses examined the various RTC variables to see if there were differences across clusters. Figure 4 shows selected RTC variables from each locale highlighting some of the most interesting RTC features. The goal of this descriptive analysis was to identify one cluster of interest from each locale to examine in detail based on variation we observed among the different RTC variables. Shared aspects of each cluster’s road segments could then be identified which appear to be particularly associated with common RTC types within the cluster. 
+  
+Looking at the breakdown of RTCs by type within each cluster of Gloucester, one cluster combines road segments with a higher average rate of RTCs involving motorcycles than either of the other two clusters. In Cambridge, another cluster stands out as having a high average number of RTCs involving cyclists. Alternatively, in Oxford RTCs involving pedestrians were observed at a higher rate in one cluster than any of the other clusters. These three clusters will be examined qualitatively through visual inspection and mapping to explore the type of insights that can be gained from this method.
 
 
 <p align="center">
@@ -65,7 +67,7 @@ After identifying the final number of clusters in each location, descriptive ana
 
 ## Visual Interpretation of Clusters
 
-Figure 5 shows a visual inspection of five randomly chosen road segments from the chosen clusters. Each road segment is shown with their two paired buffers. Policymakers from these cities will be best positioned to interpret the clusters and determine what interventions might be appropriate, however there are some high-level conclusions that can be made from a simple visual inspection
+Figure 5 shows a visual inspection of five randomly chosen road segments from the chosen clusters. Each road segment is shown with the two paired images that provided information about the road segment. Policymakers from these cities will be best positioned to interpret the clusters and determine what interventions might be appropriate, however there are some high-level conclusions that can be made from a simple visual inspection.
 
 **Gloucester**
 Roundabouts appear in nearly all the images of the selected cluster. Given the high rate of RTCs involving motorcycles within this cluster, it could be that motorcycles have particular difficulties with roundabouts in Gloucester, perhaps emphasizing the need for clarity in their right of way assignments. This echoes Gloucestershire’s recent Local Transport Plan which called for interventions of increased education programmes aimed at motorcyclists.
@@ -82,7 +84,7 @@ This Oxford cluster's road segments contain the highest rate of RTCs involving p
 
 ## Takeaways and Future Directions 
 
-In each location, a group of hazardous road segments was reviewed which share similar image-derived features. Because these road segments share common characteristics pulled solely from their built form, when it is found that these road segments also share similar challenges, such as a propensity for RTCs involving pedestrians, policymakers should have more confidence that these locations can be targeted by a comparable set of interventions. By utilizing aerial image features, this work suggests that the similarities found in the built environment in different parts of these cities can be leveraged to create better targeted interventions at reducing future RTCs. Designing a pipeline that utilizes unsupervised ML techniques but is intentionally not fully unsupervised, experts can be kept in the analytic loop to leverage their domain knowledge for enhanced qualitative analysis of hazardous road segments. 
+In each location, a group of hazardous road segments was reviewed which share similar image-derived features. Because these road segments share common characteristics pulled solely from their built form, when it is found that these road segments also share similar challenges, such as a propensity for RTCs involving pedestrians, policymakers should have more confidence that these locations can be targeted by a comparable set of interventions. By utilizing aerial image features, this work suggests that the similarities found in the built environment in different parts of these cities can be leveraged to create better targeted interventions at reducing future RTCs. We designed a pipeline that utilizes unsupervised ML techniques but is intentionally not fully unsupervised, so that experts can be kept in the analytic loop to leverage their domain knowledge for enhanced qualitative analysis of hazardous road segments. 
 
 This research was designed to demonstrate how aerial imagery and ML methods can be leveraged to aid decisions that should reduce RTCs on public roads and improve governmental decision making. Building off this work, it is easy to see how similar methodologies could utilize aerial imagery to better understand other factors related to the built environment such as crime, energy use, pollution, wildlife management, and food access, to name but a few.
 
