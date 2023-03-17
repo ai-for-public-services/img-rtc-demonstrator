@@ -1,4 +1,4 @@
-#  Companion page for Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segmentsk 
+#  Companion page for Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segments 
 This repo contains the companion page for the article [_Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segments_](https://www.researchsquare.com/article/rs-2678278/v1), written by John Francis, Jonathan Bright, Saba Esnaashari, Youmna Hashem, Deborah Morgan, and Vincent Straub. The page hosts tables and visualizations presented in the article which may be reused under a Creative Commons Attribution 4.0 International license.
 
 The page can be accessed at: [https://ai-for-public-services.github.io/img-rtc-demonstrator/](https://ai-for-public-services.github.io/img-rtc-demonstrator/)
