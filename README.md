@@ -5,6 +5,7 @@
 
 This project is focused on using unsupervised ML techniques on aerial image data to look at relationships between the built environment and Road Traffic Collisions (car crashes).
 
+Link to preprint article: [https://www.researchsquare.com/article/rs-2678278/v1](https://www.researchsquare.com/article/rs-2678278/v1)
 
 ### Data
 - The aerial imagery used in this work was obtained from https://digimap.edina.ac.uk/aerial and cannot be posted publicly.
