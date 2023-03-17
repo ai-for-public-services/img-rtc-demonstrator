@@ -1,0 +1,10 @@
+---
+---
+
+@import "minima";
+
+div.wrapper {max-width:870;margin-left:20%;}
+div.post-content > p {width:90%;max-width:800;}
+nav.toc-fixed {position:fixed;top:210px;left:80%;max-width:220px}
+nav.toc-fixed ul {list-style:none;padding-left:0;margin-left:0;}
+table {width:25%;max-width:440;}
