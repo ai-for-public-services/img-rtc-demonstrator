@@ -21,7 +21,7 @@ Globally, approximately 1.3 million people die each year because of RTCs, and a 
 
 ## Methodological Pipeline
 
-we present a pipeline that extracts meaning from aerial images with minimal supervision, and focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
+We present a pipeline that extracts meaning from aerial images with minimal supervision, and focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
 
 
 
