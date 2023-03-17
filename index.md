@@ -30,53 +30,59 @@ we present a pipeline that extracts meaning from aerial images with minimal supe
 </p>
 
 
-First, road networks and aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering are used to extract image features from the data before grouping road segments for analysis and interpretation.
+Figure 1 shows that first, road networks and aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering are used to extract image features from the data before grouping road segments for analysis and interpretation.
 
-**Operational domain**
+**Road Traffic Collision Data**
 
-The meaning and specific topic shared by concepts in the operational domain broadly relates to understanding the routine activities and functioning of AI-GOV, a particular AI application, administration, bureaucratic actor(s), or policy. 
+RTC data is based on the point-level incidents provided by the Department for Transport's road accidents and safety statistics publication for the years 2017-2020 and compiled with the stats19 R package which enables access to the UK’s official RTC database. Importantly, the RTC data used in this article only includes collisions involving personal injury on public roads which have been reported to police within 30 days. In the UK, data on vehicular damage-only RTCs do not generate a police report and incident counts are not published. Figure 2 below maps show the location of each of the 1,575 road segments which contained at least one RTC in each of the three cities under study. For final analyses, this study focuses only on 334 hazardous road segments, also shown below2, which are defined here as points that contained at least three RTCs over the study period, similar to definitions used throughout Europe.
 
-**Epistemic domain**
 
-Epistemic domain concepts are understood to predominantly deal with knowledge-related attributes, or understanding of, AI-GOV, which are here taken to include a particular AI application, administration, bureaucratic actor(s), or policy.
+<img src="images/sat_paper_rtc_maps.png" width="900">
 
-**Normative domain**
+<sub> **Figure 2.** Locations of RTC and hazardous RTC road segments across the three UK towns. <sub>
 
-The meaning and topic that concepts in the normative domain collectively express relate to the entitlements, values, and principles of political morality that affected parties hold towards, and expect of, AI-GOV, a particular AI application, administration, bureaucratic actor(s), or policy.
+## Clustering of Hazardous RTCs
+Agglomerative clustering for Cambridge, Gloucester, and Oxford generated three separate dendrograms shown in Figure 3. The dotted horizontal line in each plot signifies the cut point for choosing the number of clusters, whereby the number of intersecting vertical lines represents the number of final clusters. There is no one size fits all approach to selecting the number of clusters, exemplified by the fact that not each locale was determined to contain the same number of clusters. 
 
-<img src="images/2022-tai-fig1.png" width="900">
-
-<sub> **Figure 1.** Concepts frequently used to study AI-based systems in government. A concept map connects operational, epistemic, and normative domain (first level nodes) core concepts (second level nodes) and related terms (third level nodes). See Table 1 for a definition of each concept. Size of nodes and weight of arcs are for illustrative purposes and encode no extra information. <sub>
-
-## New concepts
-Based on our mapping of the AI in government field, we contend that a new conceptual framework is needed to integrate the diverse conceptual strands that currently permeate scholarship. Here, we try to do so in the following way: we first propose three new, multi-faceted concepts for studying AI-GOV, before using these to construct a novel conceptual 'typology' of AI-GOV, a method to classify observations in terms of their conceptual attributes. We label the new concepts we introduce **operational fitness**, **epistemic completeness**, and **normative salience**, defined below in Table 2.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Table 2.** Proposed dimensions to analyse and classify AI systems in government <sub>
 
 <p align="center">
-  <img src="images/2022-tai-table2.png" width="750" />
+  <img src="images/sat_paper_dendrograms.png" width="750" />
 </p>
 
-Table 3 provides full-length definitions of the scales proposed for each dimension and relates each to emerging measurements standards, recommended metrics and methods for the measurement and evaluation of AI technologies. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 3.** Dendrograms used to select the final number of clusters for the three UK towns. Linkage distance should not be compared across the different towns as it depends on the number of variables included in the clustering, which differed by locale. <sub>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Table 3.** Characteristics of proposed dimensions to classify AI-based systems in government <sub>
+
+After identifying the final number of clusters in each location, descriptive analyses examined the various RTC variables to see if there were differences across clusters. Figure 4 shows selected RTC variables from each locale highlighting some of the most interesting RTC features. The goal of this descriptive analysis was to identify one cluster of interest from each locale to examine in detail based on variation we observed among the different RTC variables. Looking at the breakdown of RTCs by type within each cluster of Gloucester, one cluster combines road segments with a higher average rate of RTCs involving motorcycles than either of the other two clusters. In Cambridge, another cluster stands out as having a high average number of RTCs involving cyclists. Alternatively, in Oxford RTCs involving pedestrians were observed at a higher rate in one cluster than any of the other clusters. These three clusters will be examined qualitatively through visual inspection and mapping to explore the type of insights that can be gained from this method.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 4.** Dot plots of selected RTC variables by cluster in each of the three UK towns. A Z-score of 0 denotes a mean level of that type of RTC for the specified locale, Z-scores should not be compared across locales. <sub>
 
 <p align="center">
-  <img src="images/2022-tai-table3.png" width="750" />
+  <img src="images/dotplot_for_paper.png" width="750" />
 </p>
 
-## Typology
+## Visual Interpretation of Clusters
 
-Our typology of government AI-based systems is formed of three dimensions (concepts), introduced above: operational fitness, epistemic completeness, and normative variance. In making use of these dimensions, our typology serves two main functions. It is both theory-building in the sense that it
-serves to characterize AI-GOV and further explicate the meaning of each dimension, and classificatory, in that it places illustrative examples of different types of AI-GOV in conceptually appropriate cells.
+Figure 5 shows a visual inspection of five randomly chosen road segments from the chosen clusters. Each road segment is shown with their two paired buffers. Policymakers from these cities will be best positioned to interpret the clusters and determine what interventions might be appropriate, however there are some high-level conclusions that can be made from a simple visual inspection
 
-<img src="images/2022-tai-fig2.png" width="900">
+**Gloucester**
+Roundabouts appear in nearly all the images of the selected cluster. Given the high rate of RTCs involving motorcycles within this cluster, it could be that motorcycles have particular difficulties with roundabouts in Gloucester, perhaps emphasizing the need for clarity in their right of way assignments. This echoes Gloucestershire’s recent Local Transport Plan which called for interventions of increased education programmes aimed at motorcyclists.
 
-<sub> **Figure 2.** Classifying types of AI-based systems in government. A classification schema places select types of AI-based systems in government along three main axes: normative salience, operational fitness, and epistemic completeness. Systems incorporating complex machine learning models (e.g., neural networks, boosted decision trees, random forests) are contrasted with those using simpler ones (e.g., logistic regression, decision lists). ‘Complex lethal autonomous weapons systems’ are classed as highly contested systems (red box), which exhibit high normative salience and possess advanced operational fitness. A 3-point scale for each dimension is adopted for conceptual parsimony; it is anticipated that future standards for grading real-world systems may use different scales. The draft EU AI Act, for instance, uses a 4-point scale to classify the risk level of an AI system. Where possible, placement of systems is informed by surveys of public attitudes towards AI, otherwise systems are placed using authors’ own interpretation. <sub>
+**Cambridge**
+All of this clusters road segments highlight long straight roadways with merging lanes. This Çambridge cluster also has a high rate of serious RTCs, likely suggesting higher speeds are involved. The danger of these higher speeds could be further enhanced by the curved nature of these intersections. Interestingly, Cambridgeshire has recently begun fast-tracking lower speed limits in selected zones throughout the county to combat this very issue, highlighting one possible intervention which could be used to help reduce RTCs in this cluster. 
 
-## Terminology 
+**Oxford**
+This Oxford cluster's road segments contain the highest rate of RTCs involving pedestrians and appear to be in denser urban areas with T road segments. This could indicate places where pedestrians need to cross the street, but don’t currently have a straightforward means to do so. Targeting this cluster will be essential for Oxford as creating more pedestrian-friendly roads is a key component of Oxfordshire’s Vision Zero plan to eliminate fatalities from RTCs by 2050.
 
-Since we are pursuing a unified account of AI in government, we follow the definitional path trodden by studies on the potential of AI. We in turn use the term ‘AI system’ broadly to refer to a data-driven, machine-based system that can complete—with some degree of autonomy and learning ability—a specific cognitive task (or set of tasks), using ML, agent computing, or related techniques. Unsurprisingly, many other terms are also used in discussions of AI in government; ‘algorithmic system’ and ‘automated decision system’ feature prominently in policy and legal articles, for instance. We adopt ‘AI system’, as this arguably better distinguishes contemporary systems from earlier generations of computer technology, in terms of their unique, data-powered nature and advanced analytics capabilities. Adopting this definition nevertheless enables us to conduct a conceptual analysis that is not restricted only to existing ML-based applications, although much of the scholarship we cover focuses on this. Moreover, we further employ ‘AI-GOV’ to emphasize that all government AI systems operate within social and institutional contexts.
+<img src="images/sat_paper_imagesmap_fig.png" width="900">
+
+<sub> **Figure 5.** Visual interpretation of the selected cluster for each of the three UK towns. The maps on the right only shown the location of hazardous road segments from the selected cluster, with the randomly chosen images highlighted in red. <sub>
+
+## Takeaways and Future Directions 
+
+In each location, a group of hazardous road segments was reviewed which share similar image-derived features. Because these road segments share common characteristics pulled solely from their built form, when it is found that these road segments also share similar challenges, such as a propensity for RTCs involving pedestrians, policymakers should have more confidence that these locations can be targeted by a comparable set of interventions. By utilizing aerial image features, this work suggests that the similarities found in the built environment in different parts of these cities can be leveraged to create better targeted interventions at reducing future RTCs. Designing a pipeline that utilizes unsupervised ML techniques but is intentionally not fully unsupervised, experts can be kept in the analytic loop to leverage their domain knowledge for enhanced qualitative analysis of hazardous road segments. 
+
+This research was designed to demonstrate how aerial imagery and ML methods can be leveraged to aid decisions that should reduce RTCs on public roads and improve governmental decision making. Building off this work, it is easy to see how similar methodologies could utilize aerial imagery to better understand other factors related to the built environment such as crime, energy use, pollution, wildlife management, and food access, to name but a few.
+
 
 ## Citation
 John Francis, Jonathan Bright, Saba Esnaashari et al. Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segments, 16 March 2023, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-2678278/v1](https://doi.org/10.21203/rs.3.rs-2678278/v1). 
