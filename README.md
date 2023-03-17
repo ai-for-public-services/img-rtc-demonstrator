@@ -1,24 +1,13 @@
-# Hazardous Road Traffic Collsion Clustering using Aerial Imagery
+#  Companion page for Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segmentsk 
+This repo contains the companion page for the article [_Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segments_](https://www.researchsquare.com/article/rs-2678278/v1), written by John Francis, Jonathan Bright, Saba Esnaashari, Youmna Hashem, Deborah Morgan, and Vincent Straub. The page hosts tables and visualizations presented in the article which may be reused under a Creative Commons Attribution 4.0 International license.
 
+The page can be accessed at: [https://ai-for-public-services.github.io/ai-gov-framework/](https://ai-for-public-services.github.io/ai-gov-framework/)
 
-## About this Repository
+## Citation
+John Francis, Jonathan Bright, Saba Esnaashari et al. Unsupervised feature extraction and clustering of aerial images for understanding hazardous road segments, 16 March 2023, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-2678278/v1](https://doi.org/10.21203/rs.3.rs-2678278/v1). 
 
-This project is focused on using unsupervised ML techniques on aerial image data to look at relationships between the built environment and Road Traffic Collisions (car crashes).
+## License
+All content on the page can be reused subject to providing credit and license notice under a Creative Commons Attribution 4.0 International license.
 
-Link to preprint article: [https://www.researchsquare.com/article/rs-2678278/v1](https://www.researchsquare.com/article/rs-2678278/v1)
-
-### Data
-- The aerial imagery used in this work was obtained from https://digimap.edina.ac.uk/aerial and cannot be posted publicly.
-- RTC data was obtained from the UK's Department for Transport using the Stats19 R package https://github.com/ropensci/stats19/
-
-**Maintainers**
-
-This repository is jointly developed and maintained by the Turing AI for Government team.
-
-*Please create [an issue](../../issues) to share references or ideas related to the development of this project.*
-
-📫 Contact
----
-
-For any organisation related queries or concerns, you can directly reach out to John Francis by emailing [jfrancis@turing.ac.uk](mailto:jfrancis@turing.ac.uk).
-
+## Contact
+Corresponding author: [jfrancis@turing.ac.uk](mailto:jfrancis@turing.ac.uk).
