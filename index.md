@@ -19,19 +19,18 @@ Satellite and aerial image data are becoming more widely available, and analysis
 
 Globally, approximately 1.3 million people die each year because of RTCs, and a majority of these deaths fall among vulnerable road users such as pedestrians and cyclists. In the UK, fatal or serious injuries occur on public roads every 16 minutes. In 2020, the United Nations General Assembly resolved to halve the number of global deaths and injuries from RTCs by 2030, noting that the overwhelming majority of these cases are preventable. To achieve this ambitious goal, new technologies and data will be required to enhance road safety experts’ implementation of RTC interventions.
 
-## List of concepts
+## Methodological Pipeline
 
-To capture the full breadth of analytical perspectives needed to understand AI-GOV, we advance a bottom-up approach and first inductively map the multidisciplinary study of AI. Based on an integrative literature review, we identify over 100 concepts that have frequently featured in technical, social scientific, and humanistic literature concerned with the study the attributes of AI systems and group these into three domains.
+we present a pipeline that extracts meaning from aerial images with minimal supervision, and focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Table 1.** Concepts used in the study of AI-based systems in government categorised by domain </sub>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 1.** Methodological Pipeline </sub>
 
 <p align="center">
-  <img src="images/2022-tai-table1.png" width="750" />
+  <img src="images/rough_pipeline_visual.png" width="750" />
 </p>
 
-## Concept map
 
-The labels we give to the three domains we use to group concepts are the (a) **operational**, (b) **epistemic**, and (c) **normative domain**, briefly defined below (see paper for details). The concepts in each of the three domains are not necessarily synonymous but are all used to discuss AI-GOV in a similar way. Each domain, therefore, loosely functions as a ‘semantic field’, an aggregate of words that all share a core meaning related to a specific topic.
+First, road networks and aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering are used to extract image features from the data before grouping road segments for analysis and interpretation.
 
 **Operational domain**
 
