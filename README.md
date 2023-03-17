@@ -5,6 +5,8 @@
 
 This project is focused on using unsupervised ML techniques on aerial image data to look at relationships between the built environment and Road Traffic Collisions (car crashes).
 
+Github version of the article can be accessed at: https://ai-for-public-services.github.io/img-rtc-demonstrator/
+
 Link to preprint article: [https://www.researchsquare.com/article/rs-2678278/v1](https://www.researchsquare.com/article/rs-2678278/v1)
 
 ### Data
