@@ -23,11 +23,13 @@ Globally, approximately 1.3 million people die each year because of RTCs, and a 
 
 we present a pipeline that extracts meaning from aerial images with minimal supervision, and focus on three case study locations within the UK, Cambridge, Gloucester, and Oxford, to demonstrate the application of the pipeline for road safety analysis.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 1.** Methodological Pipeline </sub>
+
 
 <p align="center">
   <img src="images/rough_pipeline_visual.png" width="750" />
 </p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 1.** Methodological Pipeline </sub>
 
 
 Figure 1 shows that first, road networks and aerial images were combined into one dataset of evenly spaced road segment points, which were further linked to RTC data. Then, a convolutional autoencoder (CAE), principal component analysis (PCA), and hierarchical clustering are used to extract image features from the data before grouping road segments for analysis and interpretation.
@@ -54,11 +56,12 @@ Agglomerative clustering for Cambridge, Gloucester, and Oxford generated three s
 
 After identifying the final number of clusters in each location, descriptive analyses examined the various RTC variables to see if there were differences across clusters. Figure 4 shows selected RTC variables from each locale highlighting some of the most interesting RTC features. The goal of this descriptive analysis was to identify one cluster of interest from each locale to examine in detail based on variation we observed among the different RTC variables. Looking at the breakdown of RTCs by type within each cluster of Gloucester, one cluster combines road segments with a higher average rate of RTCs involving motorcycles than either of the other two clusters. In Cambridge, another cluster stands out as having a high average number of RTCs involving cyclists. Alternatively, in Oxford RTCs involving pedestrians were observed at a higher rate in one cluster than any of the other clusters. These three clusters will be examined qualitatively through visual inspection and mapping to explore the type of insights that can be gained from this method.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 4.** Dot plots of selected RTC variables by cluster in each of the three UK towns. A Z-score of 0 denotes a mean level of that type of RTC for the specified locale, Z-scores should not be compared across locales. <sub>
 
 <p align="center">
   <img src="images/dotplot_for_paper.png" width="750" />
 </p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub> **Figure 4.** Dot plots of selected RTC variables by cluster in each of the three UK towns. A Z-score of 0 denotes a mean level of that type of RTC for the specified locale, Z-scores should not be compared across locales. <sub>
 
 ## Visual Interpretation of Clusters
 
