@@ -7,7 +7,7 @@ This project contains the code for the paper "Unsupervised feature extraction of
 
 Github version of the article can be accessed at: https://ai-for-public-services.github.io/img-rtc-demonstrator/
 
-Link to preprint article: [https://www.nature.com/articles/s41598-023-38100-1](https://www.nature.com/articles/s41598-023-38100-1)
+Link to article: [https://www.nature.com/articles/s41598-023-38100-1](https://www.nature.com/articles/s41598-023-38100-1)
 
 ### Data
 - The aerial imagery used in this work was obtained from https://digimap.edina.ac.uk/aerial and cannot be posted publicly.
